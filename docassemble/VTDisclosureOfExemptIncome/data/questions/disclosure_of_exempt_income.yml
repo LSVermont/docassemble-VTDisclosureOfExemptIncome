@@ -1,0 +1,464 @@
+---
+include:
+  - docassemble.AssemblyLine:assembly_line.yml
+---
+metadata:
+  title: >-
+    Disclosure of exempt income
+  short title: >-
+    Disclose exempt income
+  description: |-
+    This tool helps someone in Vermont tell the court that you have exempt income that cannot be taken for a debt.
+  can_I_use_this_form: |
+    If you are responding to a small claims case.
+  before_you_start: |
+    This tool will help you tell the court that you have exempt income that cannot be taken for a debt.
+    
+    Before you get started, please gather:
+    
+    1. 
+    1. 
+    1. 
+    
+    When you are finished, you will need to:
+    
+    1. 
+    1.
+  maturity: production
+  estimated_completion_minutes: 20
+  estimated_completion_delta: 5
+  LIST_topics: 
+    - "GO-00-00-00-00"
+    - "MO-10-00-00-00"
+  tags:
+    - "GO-00-00-00-00"
+    - "MO-10-00-00-00"
+  authors:
+    - Kris Surette, VTCourtForms, Legal Services Vermont
+  original_form:
+    - https://www.vermontjudiciary.org/media/18
+  original_form_published_on: 2024-01-01
+  help_page_url: >-
+    https://vtlawhelp.org/how-protect-your-income-and-property
+  help_page_title: >-
+    How to Protect Your Income and Property
+  allowed_courts: []
+  typical_role: "defendant"
+  al_weaver_version: "1.11.0"
+  generated_on: "2025-02-13"
+  languages:
+    - en
+  jurisdiction: NAM-US-US+VT
+  review_date: 2025-02-13
+  form_titles:
+    - Disclosure of exempt income
+  form_numbers:
+    - 100-00128
+  update_notes: |
+---
+code: |
+  # This controls the default country and list of states in address field questions
+  AL_DEFAULT_COUNTRY = "US"
+---
+code: |
+  # This controls the default state in address field questions
+  AL_DEFAULT_STATE = "VT"
+---
+code: |
+  github_repo_name =  'docassemble-DisclosureOfExemptIncome'
+---
+code: |
+  interview_short_title = "Tell the court that you have exempt income that cannot be taken for a debt"
+---
+code: |
+  al_form_type = "existing_case" 
+---
+objects:
+  - users: ALPeopleList.using(ask_number=True,target_number=1)
+---
+sections:
+  - review_disclosure_of_exempt_income: Review your answers
+---
+#################### Interview order #####################
+comment: |
+  Controls order and branching logic for questions specific to this form
+id: interview_order_disclosure_of_exempt_income
+code: |
+  # Set the allowed courts for this interview
+  allowed_courts = []
+  nav.set_section("review_disclosure_of_exempt_income")
+  user_role = "defendant"
+  user_ask_role = "defendant"
+  Intro
+  users.gather()
+  set_parts(subtitle=str(users))
+  users1_name_1
+  set_progress(14)
+  users1_address_first_line
+  has_exempt_income_state
+  has_exempt_income_other
+  set_progress(28)
+  wants_to_fill_out_financial_disclosure
+  otherwise_exempt
+  trial_court.address.address
+  set_progress(42)
+  docket_number
+  other_parties.gather()
+  signature_date
+  set_progress(56)
+  users[0].mailing_address.address
+  signature
+  interview_order_disclosure_of_exempt_income = True
+---
+###################### Main order ######################
+comment: |
+  This block includes the logic for standalone interviews.
+  Delete mandatory: True to include in another interview
+mandatory: True
+code: |
+  al_intro_screen
+  disclosure_of_exempt_income_intro
+  interview_order_disclosure_of_exempt_income
+  signature_date
+  # Store anonymous data for analytics / statistics
+  store_variables_snapshot(
+      persistent=True,
+      data={
+          "zip": showifdef("users[0].address.zip"),
+          "reached_interview_end": True,
+      },
+  )
+  disclosure_of_exempt_income_preview_question
+  basic_questions_signature_flow    
+  signature
+  disclosure_of_exempt_income_download
+---
+id: Disclosure_of_exempt_income
+continue button field: disclosure_of_exempt_income_intro
+question: |
+  Disclosure of exempt income
+subquestion: |
+  This tool will help you tell the court that you have exempt income that cannot be taken for a debt.
+  
+  Before you get started, please gather:
+  
+  1. 
+  1. 
+  1. 
+  
+  When you are finished, you will need to:
+  
+  1. 
+  1.
+
+  If you are responding to a small claims case.
+
+  Most people take about 20 minutes to complete this interview.
+---
+id: Intro
+question: |
+  Intro
+continue button field: Intro
+---
+id: Your name
+question: |
+  Your name
+fields:
+  - "Your name": users1_name_1
+    maxlength: 30
+---
+id: Your address
+question: |
+  Your address
+fields:
+  - "Your address 1st line": users1_address_first_line
+    maxlength: 37
+  - "Your address 2nd line": users1_address_second_line
+    maxlength: 20
+---
+id: Exempt income from the state of Vermont
+question: |
+  Exempt income from the state of Vermont
+fields:
+  - "Do you have exempt income from the state?": has_exempt_income_state
+    datatype: yesno
+  - "Do you have exempt income from DCF?": has_exempt_income_state_DCF
+    datatype: yesno
+  - "Do you have exempt income from DVHA?": has_exempt_income_state_DVHA
+    datatype: yesno
+---
+id: Other sources of exempt income
+question: |
+  Other sources of exempt income
+fields:
+  - "You have one of the following other sources of exempt income": has_exempt_income_other
+    datatype: yesno
+  - "Do you have exempt income from Social Security?": has_exempt_income_other_SS
+    datatype: yesno
+  - "Do you have exempt income from SSDI?": has_exempt_income_other_SSDI
+    datatype: yesno
+  - "Do you have exempt income from the VA?": has_exempt_income_other_VA
+    datatype: yesno
+  - "Do you have exempt income from unemployment?": has_exempt_income_other_unemployment
+    datatype: yesno
+  - "Do you have exempt income from workers comp?": has_exempt_income_other_workers_comp
+    datatype: yesno
+---
+id: Financial disclosure affidavit
+question: |
+  Financial disclosure affidavit
+fields:
+  - "Do you want to fill out a financial disclosure affidavit?": wants_to_fill_out_financial_disclosure
+    datatype: yesno
+---
+id: Other reasons why your income is exempt
+question: |
+  Other reasons why your income is exempt
+fields:
+  - "Are there other reasons why your income is exempt?": otherwise_exempt
+    datatype: yesno
+  - "Explain the other reasons why your income is exempt": otherwise_exempt_description
+    input type: area
+    maxlength: 316
+---
+id: preview disclosure_of_exempt_income
+question: |
+  Preview your form before you sign it
+subquestion: |
+  Here is a preview of the form you will sign on the next page.   
+  
+  ${ al_court_bundle.as_pdf(key='preview') }
+
+  Click the image to open it in a new tab. Click the "Edit answers" button
+  to edit your answers.
+
+  ${ action_button_html(url_action('review_disclosure_of_exempt_income'), label='Edit answers', color='info') }
+  
+  Remember to come back to this window to continue and sign your form.
+continue button field: disclosure_of_exempt_income_preview_question    
+---
+code: |
+  signature_fields = ['signature']
+---
+question: |
+  Signature, sign below
+signature: signature
+---
+code: |
+  # This is a placeholder for the addresses that will be searched
+  # for matching address to court. Edit if court venue is based on 
+  # a different address than the user's
+  [user.address.address for user in users.complete_elements()]
+  addresses_to_search = [user.address for user in users.complete_elements()]
+---
+id: disclosure of exempt income review screen
+event: review_disclosure_of_exempt_income
+question: |
+  Review your answers
+review:
+  - Edit: trial_court
+    button: |
+      **Trial court**
+  
+      % if defined("trial_court.address.county"):
+      * address: ${ trial_court.address.block() }
+      % endif
+  - Edit: docket_number
+    button: |
+      **Docket number**:
+      ${ docket_number }
+  - Edit: other_parties.revisit
+    button: |
+      **Other parties**
+
+      % for item in other_parties:
+        * ${ item }
+      % endfor
+  - Edit: users.revisit
+    button: |
+      **Users**
+
+      % for item in users:
+        * ${ item }
+      % endfor
+  - Edit: has_exempt_income_state
+    button: |
+      **Do you have exempt income from the state?**:
+      ${ word(yesno(has_exempt_income_state)) }
+  - Edit: has_exempt_income_state_DCF
+    button: |
+      **Do you have exempt income from DCF?**:
+      ${ word(yesno(has_exempt_income_state_DCF)) }
+  - Edit: has_exempt_income_state_DVHA
+    button: |
+      **Do you have exempt income from DVHA?**:
+      ${ word(yesno(has_exempt_income_state_DVHA)) }
+  - Edit: has_exempt_income_other
+    button: |
+      **You have one of the following other sources of exempt income**:
+      ${ word(yesno(has_exempt_income_other)) }
+  - Edit: has_exempt_income_other_SS
+    button: |
+      **Do you have exempt income from Social Security?**:
+      ${ word(yesno(has_exempt_income_other_SS)) }
+  - Edit: has_exempt_income_other_SSDI
+    button: |
+      **Do you have exempt income from SSDI?**:
+      ${ word(yesno(has_exempt_income_other_SSDI)) }
+  - Edit: has_exempt_income_other_VA
+    button: |
+      **Do you have exempt income from the VA?**:
+      ${ word(yesno(has_exempt_income_other_VA)) }
+  - Edit: has_exempt_income_other_unemployment
+    button: |
+      **Do you have exempt income from unemployment?**:
+      ${ word(yesno(has_exempt_income_other_unemployment)) }
+  - Edit: has_exempt_income_other_workers_comp
+    button: |
+      **Do you have exempt income from workers comp?**:
+      ${ word(yesno(has_exempt_income_other_workers_comp)) }
+  - Edit: wants_to_fill_out_financial_disclosure
+    button: |
+      **Do you want to fill out a financial disclosure affidavit?**:
+      ${ word(yesno(wants_to_fill_out_financial_disclosure)) }
+  - Edit: otherwise_exempt
+    button: |
+      **Are there other reasons why your income is exempt?**:
+      ${ word(yesno(otherwise_exempt)) }
+  - Edit: otherwise_exempt_description
+    button: |
+      **Explain the other reasons why your income is exempt**:
+      > ${ single_paragraph(otherwise_exempt_description) }
+  - Edit: signature
+    button: |
+      **signature**:
+      ${ signature }
+  - Edit: signature_date
+    button: |
+      **Date of signature**:
+      ${ signature_date }
+  - Edit: users1_name_1
+    button: |
+      **Your name**:
+      ${ users1_name_1 }
+  - Edit: users1_address_first_line
+    button: |
+      **Your address 1st line**:
+      ${ users1_address_first_line }
+  - Edit: users1_address_second_line
+    button: |
+      **Your address 2nd line**:
+      ${ users1_address_second_line }
+---
+continue button field: other_parties.revisit
+question: |
+  Edit other_parties
+subquestion: |
+  ${ other_parties.table }
+
+  ${ other_parties.add_action() }
+---
+table: other_parties.table
+rows: other_parties
+columns:
+  - Name: |
+      row_item.name.full() if defined("row_item.name.first") else ""
+edit:
+  - name.first
+confirm: True
+
+---
+continue button field: users.revisit
+question: |
+  Edit users
+subquestion: |
+  ${ users.table }
+
+  ${ users.add_action() }
+---
+table: users.table
+rows: users
+columns:
+  - Name: |
+      row_item.name.full() if defined("row_item.name.first") else ""
+  - Mailing address: |
+      row_item.mailing_address.block() if defined("row_item.mailing_address.address") else ""
+edit:
+  - name.first
+  - mailing_address.address
+confirm: True
+
+---
+id: download disclosure_of_exempt_income
+event: disclosure_of_exempt_income_download
+question: |
+  All done
+subquestion: |
+  Thank you ${users}. Your form is ready to download and deliver.
+  
+  View, download and send your form below. Click the "Edit answers" button to fix any mistakes.
+
+  ${ action_button_html(url_action('review_disclosure_of_exempt_income'), label='Edit answers', color='info') }
+  
+  
+  ${ al_user_bundle.download_list_html() }
+  
+
+  ${ al_user_bundle.send_button_html(show_editable_checkbox=False) }
+
+progress: 100
+---
+# ALDocument objects specify the metadata for each template
+objects:
+  - disclosure_of_exempt_income_Post_interview_instructions: ALDocument.using(title="Instructions", filename="disclosure_of_exempt_income_next_steps.docx", enabled=True, has_addendum=False)
+  - disclosure_of_exempt_income_attachment: ALDocument.using(title="Disclosure of exempt income", filename="disclosure_of_exempt_income", enabled=True, has_addendum=False, )
+---
+# Bundles group the ALDocuments into separate downloads, such as for court and for the user
+objects:
+  - al_user_bundle: ALDocumentBundle.using(elements=[disclosure_of_exempt_income_Post_interview_instructions, disclosure_of_exempt_income_attachment], filename="disclosure_of_exempt_income", title="All forms to download for your records", enabled=True)
+  - al_court_bundle: ALDocumentBundle.using(elements=[disclosure_of_exempt_income_attachment],  filename="disclosure_of_exempt_income", title="All forms to deliver to court", enabled=True)
+---
+# Each attachment defines a key in an ALDocument. We use `i` as the placeholder here so the same template is 
+# used for "preview" and "final" keys, and logic in the template checks the value of 
+# `i` to show or hide the user's signature
+attachment:
+  name: Post-interview-Instructions
+  filename: disclosure_of_exempt_income_next_steps
+  docx template file: disclosure_of_exempt_income_next_steps.docx
+  variable name: disclosure_of_exempt_income_Post_interview_instructions[i]
+  skip undefined: True
+  tagged pdf: True
+---
+attachment:
+  name: disclosure of exempt income
+  filename: disclosure_of_exempt_income
+  variable name: disclosure_of_exempt_income_attachment[i]
+  skip undefined: True
+  pdf template file: disclosure_of_exempt_income.pdf
+  fields:
+      - "trial_court_county": ${ trial_court.address.county }
+      - "docket_number": ${ docket_number }
+      - "other_parties1_name": ${ other_parties[0] }
+      - "users1_name": ${ users[0] }
+      - "has_exempt_income_state": ${ has_exempt_income_state }
+      - "has_exempt_income_state_DCF": ${ has_exempt_income_state_DCF }
+      - "has_exempt_income_state_DVHA": ${ has_exempt_income_state_DVHA }
+      - "has_exempt_income_other": ${ has_exempt_income_other }
+      - "has_exempt_income_other_SS": ${ has_exempt_income_other_SS }
+      - "has_exempt_income_other_SSDI": ${ has_exempt_income_other_SSDI }
+      - "has_exempt_income_other_VA": ${ has_exempt_income_other_VA }
+      - "has_exempt_income_other_unemployment": ${ has_exempt_income_other_unemployment }
+      - "has_exempt_income_other_workers_comp": ${ has_exempt_income_other_workers_comp }
+      - "wants_to_fill_out_financial_disclosure": ${ wants_to_fill_out_financial_disclosure }
+      - "otherwise_exempt": ${ otherwise_exempt }
+      - "otherwise_exempt_description": ${ otherwise_exempt_description }
+      # It's a signature: test which file version this is; leave empty unless it's the final version)
+      - "signature": ${ signature if i == "final" else '' }
+      - "signature_date": ${ signature_date }
+      - "users1_name_1": ${ users1_name_1 }
+      - "users1_address_first_line": ${ users1_address_first_line }
+      - "users1_address_second_line": ${ users1_address_second_line }
+      - "users1_mailing_address": ${ users[0].mailing_address }
+
+
+

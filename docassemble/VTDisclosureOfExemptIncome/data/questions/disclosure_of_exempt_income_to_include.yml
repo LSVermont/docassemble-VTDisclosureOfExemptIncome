@@ -1,0 +1,35 @@
+
+---
+attachment:
+  name: disclosure of exempt income
+  filename: disclosure_of_exempt_income
+  variable name: disclosure_of_exempt_income_attachment[i]
+  skip undefined: True
+  pdf template file: disclosure_of_exempt_income.pdf
+  fields:
+      - "trial_court_county": ${ trial_court.address.county }
+      - "docket_number": ${ docket_number }
+      - "other_parties1_name": ${ other_parties[0] }
+      - "users1_name": ${ users[0] }
+      - "has_exempt_income_state": ${ has_exempt_income_state }
+      - "has_exempt_income_state_DCF": ${ has_exempt_income_state_DCF }
+      - "has_exempt_income_state_DVHA": ${ has_exempt_income_state_DVHA }
+      - "has_exempt_income_other": ${ has_exempt_income_other }
+      - "has_exempt_income_other_SS": ${ has_exempt_income_other_SS }
+      - "has_exempt_income_other_SSDI": ${ has_exempt_income_other_SSDI }
+      - "has_exempt_income_other_VA": ${ has_exempt_income_other_VA }
+      - "has_exempt_income_other_unemployment": ${ has_exempt_income_other_unemployment }
+      - "has_exempt_income_other_workers_comp": ${ has_exempt_income_other_workers_comp }
+      - "wants_to_fill_out_financial_disclosure": ${ wants_to_fill_out_financial_disclosure }
+      - "otherwise_exempt": ${ otherwise_exempt }
+      - "otherwise_exempt_description": ${ otherwise_exempt_description }
+      # It's a signature: test which file version this is; leave empty unless it's the final version)
+      - "signature": ${ signature if i == "final" else '' }
+      - "signature_date": ${ signature_date }
+      - "users1_name_1": ${ users1_name_1 }
+      - "users1_address_first_line": ${ users1_address_first_line }
+      - "users1_address_second_line": ${ users1_address_second_line }
+      - "users1_mailing_address": ${ users[0].mailing_address }
+
+
+
