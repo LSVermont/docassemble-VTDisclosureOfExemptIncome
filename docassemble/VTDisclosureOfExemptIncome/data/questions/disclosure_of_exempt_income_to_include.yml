@@ -1,5 +1,6 @@
 # This is being used by the Small Claims Answer interview.
 
+
 ---
 attachment:
   name: disclosure of exempt income
@@ -22,8 +23,8 @@ attachment:
           % if len(has_exempt_income_other.true_values()) > 0:
           ${ True }
           % endif
-      - "has_exempt_income_other_SS": ${ has_exempt_income_other["SSA"] }
-      - "has_exempt_income_other_SSDI": ${ has_exempt_income_other["SSDI"] }
+      - "has_exempt_income_other_SS": ${ has_exempt_income_other["NotUsingThisOne"] }
+      - "has_exempt_income_other_SSDI": ${ has_exempt_income_other["SSA"] }
       - "has_exempt_income_other_VA": ${ has_exempt_income_other["VA"] }
       - "has_exempt_income_other_unemployment": ${ has_exempt_income_other["unemployment"] }
       - "has_exempt_income_other_workers_comp": ${ has_exempt_income_other["workers_comp"] }
