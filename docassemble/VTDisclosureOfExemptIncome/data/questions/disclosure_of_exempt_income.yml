@@ -1,3 +1,6 @@
+comment: |
+  The to_include yml file is being used by the Small Claims Answer interview. It has updated attachment code.
+  When working on this as a stand-alone interview, be sure to use that attachment code, as well as the questions and variable names used in the Small Claims Answer.
 ---
 include:
   - docassemble.AssemblyLine:assembly_line.yml
