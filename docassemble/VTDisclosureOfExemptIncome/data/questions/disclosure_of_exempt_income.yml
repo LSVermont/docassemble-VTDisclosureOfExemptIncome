@@ -459,7 +459,7 @@ attachment:
       - "signature": ${ signature if i == "final" else '' }
       - "users1_signature": ${ users[0].signature_if_final(i) }
       - "signature_date": ${ signature_date }
-      - "users1_name_1": ${ users[0] }
+      - "users1_name_discl_exempt_inc": ${ users[0] }
       - "users1_address_first_line": ${ users[0].address.line_one() }
       - "users1_address_second_line": ${ users[0].address.line_two() }
       - "users1_mailing_address": ${ users[0].mailing_address.on_one_line() }
