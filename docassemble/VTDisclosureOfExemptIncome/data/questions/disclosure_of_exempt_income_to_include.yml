@@ -29,18 +29,13 @@ attachment:
       - "has_exempt_income_other_unemployment": ${ has_exempt_income_other["unemployment"] }
       - "has_exempt_income_other_workers_comp": ${ has_exempt_income_other["workers_comp"] }
       - "wants_to_fill_out_financial_disclosure": ${ wants_to_fill_out_financial_disclosure }
-      - "otherwise_exempt": |
-          % if defined("otherwise_exempt"):
-          ${ True }
-          % endif
-      - "otherwise_exempt_description": ${ otherwise_exempt }
+      - "otherwise_exempt": ${ otherwise_exempt }
+      - "otherwise_exempt_description": ${ otherwise_exempt_description }
       # It's a signature: test which file version this is; leave empty unless it's the final version)
-      - "users1_signature": ${ signature if i == "final" else '' }
+      - "users1_signature": ${ users[0].signature_if_final(i) }
       - "signature_date": ${ signature_date }
       - "users1_name_discl_exempt_inc": ${ users[0] }
       - "users1_address_first_line": ${ users[0].address.line_one() }
       - "users1_address_second_line": ${ users[0].address.line_two() }
       - "users1_mailing_address": ${ users[0].mailing_address.on_one_line() }
-
-
-
+---
